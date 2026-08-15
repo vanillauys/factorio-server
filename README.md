@@ -5,8 +5,10 @@ Docker compose stack for the Factorio game server on Dokploy.
 Two services share one `factorio-data` volume:
 
 - `factorio` - the game server, published on UDP 34197.
-- `filebrowser` - web file manager for the volume (saves, mods,
+- `files` - dufs, a web file manager for the volume (saves, mods,
   config), served at `https://factorio.vanillauys.com` through Traefik.
+  Login: `admin` / the `FILES_PASSWORD` value from the Dokploy
+  Environment tab. Container port 5000.
 
 Players connect to `factorio.vanillauys.com` (UDP 34197). The DNS
 record must stay DNS-only (grey cloud): the Cloudflare proxy does not

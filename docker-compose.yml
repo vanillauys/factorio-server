@@ -2,8 +2,9 @@
 #
 # - The game speaks UDP on 34197. Traefik cannot route it; Docker
 #   publishes the port directly on the host.
-# - filebrowser gives browser access to /factorio (saves, mods, config).
-#   Dokploy routes https://factorio.vanillauys.com to it through Traefik.
+# - files (dufs) gives browser access to /factorio (saves, mods,
+#   config). Dokploy routes https://factorio.vanillauys.com to it
+#   through Traefik.
 
 services:
   factorio:
@@ -24,13 +25,15 @@ services:
       # mods disabled in mod-list.json on every start.
       DLC_SPACE_AGE: "false"
 
-  filebrowser:
-    image: filebrowser/filebrowser:v2-s6
+  # Web file manager for the volume. Set FILES_PASSWORD in the Dokploy
+  # Environment tab; the login is admin / that password. Do not use "$"
+  # in the password - compose interpolation eats it.
+  files:
+    image: sigoden/dufs:latest
     restart: unless-stopped
+    command: ["/data", "-A", "-a", "admin:${FILES_PASSWORD}@/:rw"]
     volumes:
-      - factorio-data:/srv
-      - filebrowser-db:/database
+      - factorio-data:/data
 
 volumes:
   factorio-data:
-  filebrowser-db:
