@@ -17,10 +17,10 @@ services:
     volumes:
       - factorio-data:/factorio
     environment:
-      # Always start from saves/fenner.zip, not from the newest zip.
-      # Autosaves and the generated first-boot map cannot shadow it.
-      LOAD_LATEST_SAVE: "false"
-      SAVE_NAME: "fenner"
+      # Load the newest save in /factorio/saves on each start. The
+      # newest zip wins: delete throwaway saves so they cannot shadow
+      # the real one.
+      LOAD_LATEST_SAVE: "true"
       # The mods come from the volume. Do not pull mod updates on start.
       UPDATE_MODS_ON_START: "false"
       # The save does not use the Space Age DLC. This keeps the DLC
