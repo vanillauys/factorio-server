@@ -1,6 +1,16 @@
 # factorio-server
 
-Configuration for the Factorio game server.
+Docker compose stack for the Factorio game server on Dokploy.
+
+Two services share one `factorio-data` volume:
+
+- `factorio` - the game server, published on UDP 34197.
+- `filebrowser` - web file manager for the volume (saves, mods,
+  config), served at `https://factorio.vanillauys.com` through Traefik.
+
+Players connect to `factorio.vanillauys.com` (UDP 34197). The DNS
+record must stay DNS-only (grey cloud): the Cloudflare proxy does not
+carry game UDP traffic.
 
 ## Setup
 

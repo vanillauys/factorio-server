@@ -1,0 +1,35 @@
+# Factorio game server + a web file manager on one shared volume.
+#
+# - The game speaks UDP on 34197. Traefik cannot route it; Docker
+#   publishes the port directly on the host.
+# - filebrowser gives browser access to /factorio (saves, mods, config).
+#   Dokploy routes https://factorio.vanillauys.com to it through Traefik.
+
+services:
+  factorio:
+    # The server version must match the game client version. Pin an
+    # exact tag (for example 2.0.77) to control when the server updates.
+    image: factoriotools/factorio:stable
+    restart: unless-stopped
+    ports:
+      - "34197:34197/udp"
+    volumes:
+      - factorio-data:/factorio
+    environment:
+      # Load the newest save in /factorio/saves on each start.
+      LOAD_LATEST_SAVE: "true"
+      # The mods come from the volume. Do not pull mod updates on start.
+      UPDATE_MODS_ON_START: "false"
+      # If the save does not use the Space Age DLC, set this to "false".
+      DLC_SPACE_AGE: "true"
+
+  filebrowser:
+    image: filebrowser/filebrowser:v2-s6
+    restart: unless-stopped
+    volumes:
+      - factorio-data:/srv
+      - filebrowser-db:/database
+
+volumes:
+  factorio-data:
+  filebrowser-db:
