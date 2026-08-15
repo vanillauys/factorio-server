@@ -20,8 +20,9 @@ services:
       LOAD_LATEST_SAVE: "true"
       # The mods come from the volume. Do not pull mod updates on start.
       UPDATE_MODS_ON_START: "false"
-      # If the save does not use the Space Age DLC, set this to "false".
-      DLC_SPACE_AGE: "true"
+      # The save does not use the Space Age DLC. This keeps the DLC
+      # mods disabled in mod-list.json on every start.
+      DLC_SPACE_AGE: "false"
 
   filebrowser:
     image: filebrowser/filebrowser:v2-s6
